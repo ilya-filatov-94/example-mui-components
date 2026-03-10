@@ -1,0 +1,30 @@
+# dependencies
+env_variables.ts
+/node_modules
+/.pnp
+.pnp.js
+
+# Local
+.DS_Store
+*.local
+*.log*
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Dist
+node_modules
+dist/
+
+# Profile
+.rspack-profile-*/
+
+# IDE
+/.vscode
+.vscode/*
+!.vscode/extensions.json
+.idea

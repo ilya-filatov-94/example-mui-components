@@ -1,0 +1,33 @@
+
+.wrapperNavBar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.wrapperUserBar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.wrapperUserData {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+}
+
+.label {
+    font-weight: 600;
+    color: #3f3e3c;
+}
+
+.subLabel {
+    color: #72716d;
+}
