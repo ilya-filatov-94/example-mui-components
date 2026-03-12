@@ -1,0 +1,62 @@
+
+.button {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  /* базовые стили кнопки */
+  padding: var(--padding, 6px 27px);
+  margin: 0;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  font-family: 'Roboto', 'Helvetica', 'Arial' sans-serif;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.75;
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  background-color: var(--bg-color, #2f76da);
+  color: #fff;
+  /* pointer-events не задаём, по умолчанию auto */
+}
+
+.button:disabled {
+  pointer-events: none;
+  background-color: rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 0, 0.26);
+}
+
+.button:not(:disabled):active {
+  background-color: var(--bg-active, rgb(99, 134, 183));
+}
+
+.button:not(:disabled):hover:not(:active) {
+  background-color: var(--bg-hover, rgb(32, 82, 152));
+}
+
+.textLoader {
+    margin: 0;
+    padding: 0;
+}
+
+.loaderCircle {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid #000;
+  border-right: 3px solid transparent;
+  border-radius: 50%;
+  margin: 0 auto;
+  animation: rotate 1s infinite linear;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

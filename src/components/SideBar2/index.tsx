@@ -11,8 +11,10 @@ import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
 import Icon from '@mui/material/Icon';
 import Box from '@mui/material/Box';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import { Backdrop, Collapse } from '@mui/material';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Backdrop from '@mui/material/Backdrop';
+import Collapse from '@mui/material/Collapse';
 import pages, { TPage } from '../app/pages';
 import ServiceIcon from '../../assets/images/serviceIcon.png';
 import { drawerHeight, drawerWidth as defaultDrawerWidth } from './consts';
@@ -62,15 +64,15 @@ const DrawerHeader = muiStyled('div')(({ theme }) => ({
 const createExpandIcon = (page: TPage, currentOpenedItem: string | null) => {
   if (page?.content) {
     return currentOpenedItem === page.label ? (
-      <ExpandLess sx={{ mr: 1 }} />
+      <ExpandLessIcon sx={{ mr: 1 }} />
     ) : (
-      <ExpandMore sx={{ mr: 1 }} />
+      <ExpandMoreIcon sx={{ mr: 1 }} />
     );
   }
   return null;
 };
 
-interface SideBarProps {
+type SideBarProps = {
   initialWidth?: number;
 }
 

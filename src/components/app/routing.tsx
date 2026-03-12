@@ -1,11 +1,17 @@
 import { lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { rootRoute, treeSystemsRoute, resizePanelRoute } from './routes';
+import { 
+  rootRoute, 
+  treeSystemsRoute, 
+  resizePanelRoute,
+  dialogWithProgressBarRoute
+} from './routes';
 import Layout from '../Layout';
 
 const HomePage = lazy(() => import('../../pages/HomePage'));
 const SystemsPage = lazy(() => import('../../pages/SystemsPage'));
 const ResizePanel = lazy(() => import('../../pages/ResizePanel'));
+const DialogWithProgressBar = lazy(() => import('../../pages/DialogWithProgressBar'));
  
 function Routing() {
     return (
@@ -22,6 +28,10 @@ function Routing() {
                 <Route 
                   path={resizePanelRoute}
                   element={<ResizePanel />}
+                />
+                <Route 
+                  path={dialogWithProgressBarRoute}
+                  element={<DialogWithProgressBar />}
                 />
             </Route>
         </Routes>

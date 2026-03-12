@@ -1,7 +1,12 @@
 import SchemaOutlinedIcon from "@mui/icons-material/SchemaOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import FeedOutlinedIcon from "@mui/icons-material/FeedOutlined";
-import { rootRoute, treeSystemsRoute, resizePanelRoute } from './routes';
+import { 
+    rootRoute, 
+    treeSystemsRoute, 
+    resizePanelRoute,
+    dialogWithProgressBarRoute
+} from './routes';
 
 export type TContentPage = {
     label: string;
@@ -49,6 +54,18 @@ const pages: TPage[] = [
             {
                 label: 'Панель с изменяемой шириной',
                 to: resizePanelRoute,
+                roles: ['USER']
+            }
+        ]
+    },
+        {
+        label: 'Диалоговое окно',
+        icon: <FeedOutlinedIcon />,
+        roles: ['USER'],
+        content: [
+            {
+                label: 'Диалоговое окно с прогресс-баром',
+                to: dialogWithProgressBarRoute,
                 roles: ['USER']
             }
         ]
