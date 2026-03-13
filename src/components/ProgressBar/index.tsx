@@ -10,14 +10,8 @@ import ErrorIcon from '@mui/icons-material/Error';
 import WarningIcon from '@mui/icons-material/Warning';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
+import { ProgressBarProps } from '../../types/ProgressPpdTypes';
 // import styles from './ProgressBar.module.css';
-
-export type ProgressBarProps = {
-  overallStatus: string;
-  completedTargets?: number;
-  totalTargets: number;
-  progress?: number;
-}
 
 type TElemOfStatus = {
   color: 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning';
@@ -30,9 +24,9 @@ type TMapStatusProgress = Record<string, TElemOfStatus>
 const getStatusProgress = (status: string): TElemOfStatus => {
   const mapStatusProgress: TMapStatusProgress = {
     COMPLETED: {
-        color: 'success',
-        icon: <CheckCircleIcon />,
-        text: 'Все файлы отправлены'
+      color: 'success',
+      icon: <CheckCircleIcon />,
+      text: 'Все файлы отправлены'
     },
     PARTIALLY_COMPLETED: {
       color: 'warning',
@@ -53,12 +47,17 @@ const getStatusProgress = (status: string): TElemOfStatus => {
       color: 'primary',
       icon: <ScheduleIcon />,
       text: 'Ожидание обработки'
+    },
+    CANCELLED: {
+      color: 'secondary',
+      icon: <WarningIcon />,
+      text: 'Прервано пользователем'
     }
   };
   return mapStatusProgress?.[status] || mapStatusProgress.DEFAULT;
 }
 
-export const ProgressBar: FC<ProgressBarProps> = ({
+export const ProgressBar: FC<Omit<ProgressBarProps, 'operationId'>> = ({
   overallStatus,
   completedTargets = 0,
   totalTargets,
