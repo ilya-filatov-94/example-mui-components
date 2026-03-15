@@ -5,7 +5,8 @@ import {
     rootRoute, 
     treeSystemsRoute, 
     resizePanelRoute,
-    dialogWithProgressBarRoute
+    dialogWithProgressBarRoute,
+    progressInNotificationRoute
 } from './routes';
 
 export type TContentPage = {
@@ -58,7 +59,7 @@ const pages: TPage[] = [
             }
         ]
     },
-        {
+    {
         label: 'Диалоговое окно',
         icon: <FeedOutlinedIcon />,
         roles: ['USER'],
@@ -70,7 +71,18 @@ const pages: TPage[] = [
             }
         ]
     },
-
+    {
+        label: 'Прогресс-бар в toast',
+        icon: <FeedOutlinedIcon />,
+        roles: ['USER'],
+        content: [
+            {
+                label: 'Прогресс-бар в toast',
+                to: progressInNotificationRoute,
+                roles: ['USER']
+            }
+        ]
+    },
 ];
 
 export default pages;

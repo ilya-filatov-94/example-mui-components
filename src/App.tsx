@@ -2,6 +2,8 @@ import { FC } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { ruRU as coreRuRu, ruRU } from '@mui/material/locale';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Routing from './components/app/routing';
 import './App.css';
 
@@ -33,13 +35,32 @@ export type AppTheme = ReturnType<typeof createTheme>;
 
 const App: FC = () => {
   return (
-    <BrowserRouter>
+    <div className='App'> 
+     <BrowserRouter future={{v7_startTransition: false}}>
       <ThemeProvider theme={theme}>
-        <div className='App'> 
-          <Routing />
-        </div>
+        <Routing />
       </ThemeProvider>
-    </BrowserRouter>
+     </BrowserRouter>
+     <ToastContainer 
+        containerId="notifications"
+        position="bottom-left"
+        newestOnTop
+        hideProgressBar
+        autoClose={3500}
+        theme="light"
+        style={{ width: '38vw', whiteSpace: 'pre-wrap'}}
+      />
+      <ToastContainer 
+        containerId="progressBar"
+        position="bottom-right"
+        newestOnTop
+        hideProgressBar
+        autoClose={false}
+        closeOnClick={false}
+        theme="light"
+        style={{ width: 'auto', maxWidth: '600px' }} // адаптивная ширина
+      />
+    </div>
   );
 };
 

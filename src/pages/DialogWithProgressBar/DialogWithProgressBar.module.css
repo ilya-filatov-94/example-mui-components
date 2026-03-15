@@ -1,4 +1,9 @@
 
+.wrapperPage {
+    padding: 20px;
+    margin: 0 auto;
+}
+
 .wrapperContentWindow {
     width: 100%;
     height: 100%;

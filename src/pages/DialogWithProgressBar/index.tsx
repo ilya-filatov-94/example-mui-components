@@ -1,11 +1,10 @@
 import { FC, useEffect, useState } from 'react';
 // import { nanoid } from 'nanoid';
 // import { ProgressBarProps } from '../../types/ProgressPpdTypes';
-import { useDataSendingPpds } from '../../store/store';
+import { useDataSendingPpds } from '../../store/storeProgressSending';
 import { CustomButton } from '../../components/CustomButton';
 import { TemplateDialog } from '../../components/TemplateDialog';
 import { ProgressBar } from '../../components/ProgressBar';
-
 import styles from './DialogWithProgressBar.module.css';
 
 const DialogWithProgressBar: FC = () => {
@@ -42,13 +41,23 @@ const DialogWithProgressBar: FC = () => {
     setStateDialog(prev => ({...prev, isOpen: true }));
   }
 
+  const checkDisableStopButton = (status: string) => {
+    const isOver = (status === 'COMPLETED' || 
+      status === 'PARTIALLY_COMPLETED' || 
+      status === 'FAILED' || 
+      status === 'CANCELLED');
+    return isOver;
+  }
+
   return (
     <>
-      <CustomButton 
-        text='Открыть окно'
-        onClick={startProcess}
-        type="button"
-      />
+      <div className={styles.wrapperPage}>
+        <CustomButton 
+          text='Открыть окно'
+          onClick={startProcess}
+          type="button"
+        />
+      </div>
       <TemplateDialog
         isOpenDialog={stateDialog?.isOpen}
         openDialog={(isOpen) => setStateDialog(prev => ({...prev, isOpen}))}
@@ -57,7 +66,7 @@ const DialogWithProgressBar: FC = () => {
         content={
           <div className={styles.wrapperContentWindow}>
             <ProgressBar 
-              overallStatus={currentRunningProcess?.overallStatus || 'primary'}
+              overallStatus={currentRunningProcess?.overallStatus || 'DEFAULT'}
               completedTargets={currentRunningProcess?.completedTargets || 0}
               totalTargets={currentRunningProcess?.totalTargets || 0}
               progress={currentRunningProcess?.progress}
@@ -76,6 +85,7 @@ const DialogWithProgressBar: FC = () => {
             />
             <CustomButton
               text="Stop"
+              disabled={checkDisableStopButton(currentRunningProcess?.overallStatus || '')}
               bgColor='#db4742'
               bgActiveColor='#db5e5a'
               bgHoverColor='#bc1c17'

@@ -4,14 +4,16 @@ import {
   rootRoute, 
   treeSystemsRoute, 
   resizePanelRoute,
-  dialogWithProgressBarRoute
+  dialogWithProgressBarRoute,
+  progressInNotificationRoute
 } from './routes';
 import Layout from '../Layout';
 
 const HomePage = lazy(() => import('../../pages/HomePage'));
 const SystemsPage = lazy(() => import('../../pages/SystemsPage'));
-const ResizePanel = lazy(() => import('../../pages/ResizePanel'));
-const DialogWithProgressBar = lazy(() => import('../../pages/DialogWithProgressBar'));
+const ResizePanelPage = lazy(() => import('../../pages/ResizePanel'));
+const DialogWithProgressBarPage = lazy(() => import('../../pages/DialogWithProgressBar'));
+const ProgressInToastPage = lazy(() => import('../../pages/ProgressBarInNotification'));
  
 function Routing() {
     return (
@@ -27,11 +29,15 @@ function Routing() {
                 />
                 <Route 
                   path={resizePanelRoute}
-                  element={<ResizePanel />}
+                  element={<ResizePanelPage />}
                 />
                 <Route 
                   path={dialogWithProgressBarRoute}
-                  element={<DialogWithProgressBar />}
+                  element={<DialogWithProgressBarPage />}
+                />
+                <Route 
+                  path={progressInNotificationRoute}
+                  element={<ProgressInToastPage />}
                 />
             </Route>
         </Routes>

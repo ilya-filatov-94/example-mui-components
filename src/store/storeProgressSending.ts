@@ -138,7 +138,7 @@ export const useDataSendingPpds = create<TDataSendingPpds>((set, get) => ({
         if (currentState) {
             const newProgressSendPpd = {
                 ...currentState,
-                overallStatus: 'CANCELLED',
+                overallStatus: 'CANCELLED' as typeof currentState.overallStatus,
                 loading: false,
             };
             const oldArray = get().listRunningProcesses?.filter(item => item.operationId !== operationId);

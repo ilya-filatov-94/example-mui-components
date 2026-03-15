@@ -20,3 +20,11 @@ body {
   font-size: 1rem;
   font-weight: normal;
 }
+
+.Toastify__toast-container--bottom-right {
+  width: auto !important;
+}
+.Toastify__toast {
+  width: auto !important;
+  min-width: 300px;
+}

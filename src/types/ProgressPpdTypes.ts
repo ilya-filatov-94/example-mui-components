@@ -1,7 +1,7 @@
 
 export type ProgressBarProps = {
   operationId: string;
-  overallStatus: string;
+  overallStatus: 'COMPLETED' | 'PARTIALLY_COMPLETED' | 'FAILED' | 'PROCESSING' | 'DEFAULT' | 'CANCELLED';
   completedTargets: number;
   totalTargets: number;
   progress?: number;
