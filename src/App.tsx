@@ -57,6 +57,7 @@ const App: FC = () => {
         hideProgressBar
         autoClose={false}
         closeOnClick={false}
+        closeButton={false}
         theme="light"
         style={{ width: 'auto', maxWidth: '600px' }} // адаптивная ширина
       />

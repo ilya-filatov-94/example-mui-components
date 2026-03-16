@@ -16,7 +16,7 @@ const Layout: FC = () => {
         <div className={styles.wrapperLayout}>
           <NavBar />
           <div className={styles.layout} style={{ height: `calc(100% - ${drawerHeight + 3})px`}}>
-            <Suspense fallback={<Loader />}>
+            <Suspense fallback={<div className={styles.wrapperFallbackForOutlet}><Loader /></div>}>
               <Outlet />
             </Suspense>
           </div>

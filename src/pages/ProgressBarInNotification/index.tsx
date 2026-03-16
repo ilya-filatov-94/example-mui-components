@@ -45,10 +45,13 @@ const ProgressBarInNotification: FC = () => {
           ottStand={dataProcess.ottStand as TottStand} 
         />,
         {
-          type: 'info',
           containerId: 'progressBar',
           autoClose: false,
           closeOnClick: false,
+          style: { 
+            border: '1px solid #b5d4ff',
+            borderRadius: '10px' 
+          }
         }
       );
 
