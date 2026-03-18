@@ -30,19 +30,19 @@ const arrayStatesOfProgress: Omit<ProgressBarProps, 'operationId'>[] = [
         progress: 0
     },
     {
-        overallStatus: 'PROCESSING',
+        overallStatus: 'PENDING',
         completedTargets: 1,
         totalTargets: 4,
         progress: Math.round(1/4 * 100),
     },
     {
-        overallStatus: 'PROCESSING',
+        overallStatus: 'PENDING',
         completedTargets: 2,
         totalTargets: 4,
         progress: Math.round(2/4 * 100),
     },
     {
-        overallStatus: 'PROCESSING',
+        overallStatus: 'PENDING',
         completedTargets: 3,
         totalTargets: 4,
         progress: Math.round(3/4 * 100),

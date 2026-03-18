@@ -36,7 +36,7 @@ export const getStatusProgress = (status: string): TElemOfStatus => {
       icon: <ErrorIcon/>,
       text: 'Ошибка отправки'
     },
-    PROCESSING: {
+    PENDING: {
       color: 'info',
       icon: <PlayCircleIcon />,
       text: 'Отправка файлов',
@@ -56,7 +56,7 @@ export const getStatusProgress = (status: string): TElemOfStatus => {
 }
 
 type TProgressBarProps = {
-  overallStatus: 'COMPLETED' | 'PARTIALLY_COMPLETED' | 'FAILED' | 'PROCESSING' | 'DEFAULT' | 'CANCELLED';
+  overallStatus: 'COMPLETED' | 'PARTIALLY_COMPLETED' | 'FAILED' | 'PENDING' | 'DEFAULT' | 'CANCELLED';
   completedTargets: number;
   totalTargets: number;
   progress?: number;

@@ -1,9 +1,10 @@
-import { FC } from 'react';
+import { FC, useCallback } from 'react';
 import { useShallow } from 'zustand/react/shallow';
+import { toast } from "react-toastify";
 import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
 import Chip from '@mui/material/Chip';
-import { TottStand } from '../../types/ProgressToastTypes';
-import { useDataToastProgress } from '../../store/storeToastProgressBar';
+import { TottStand, ProgressToastType } from '../../types/ProgressToastTypes';
+import { useDataToastProgress, TCurrentProgressState } from '../../store/storeToastProgressBar';
 import { getStatusProgress } from '../ProgressBar';
 import styles from './ProgressToast.module.css';
 
@@ -14,7 +15,7 @@ type ProgressToastProps = {
 }
 
 export const ProgressToast: FC<ProgressToastProps> = ({ 
-  operationId, 
+  operationId,
   nameIntPoint,
   ottStand
 }) => {
@@ -22,6 +23,10 @@ export const ProgressToast: FC<ProgressToastProps> = ({
     state => state.listRunningProcesses.find(item => item.operationId === operationId)
   ));
   const { color } = getStatusProgress(process?.overallStatus || 'DEFAULT');
+
+  const handleClose = useCallback((process: ProgressToastType & TCurrentProgressState | undefined) => {
+    toast.dismiss(process?.toastId);
+  }, []);
 
   return (
     <div className={styles.wrapperContent}>
@@ -56,6 +61,15 @@ export const ProgressToast: FC<ProgressToastProps> = ({
           {process?.progress || 0}% завершено
         </p>  
       </div>
+      {process?.overallStatus === 'FAILED' && (
+        <button
+          onClick={() => handleClose(process)}
+          className={styles.closeButton}
+          aria-label="Закрыть"
+        >
+          ✕
+        </button>
+      )}
     </div>
   )
 }

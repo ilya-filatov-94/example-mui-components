@@ -4,7 +4,6 @@ import { TottStand } from '../../types/ProgressToastTypes';
 import { addNotification } from '../../utils/notifications';
 import { CustomButton } from '../../components/CustomButton';
 import { InputText } from '../../components/InputText';
-// import { TemplateDialog } from '../../components/TemplateDialog';
 import { ProgressToast } from '../../components/ProgressToast';
 import { useDataToastProgress } from '../../store/storeToastProgressBar';
 import styles from './ProgressBarInNotification.module.css';
@@ -37,10 +36,9 @@ const ProgressBarInNotification: FC = () => {
     }
 
     if (operationId) {
-      // Показываем тост и запоминаем его id
-      const toastId = toast(
+      const toastId: number | string = toast(
         <ProgressToast 
-          operationId={operationId || ''}
+          operationId={operationId}
           nameIntPoint={dataProcess.nameIntPoint}
           ottStand={dataProcess.ottStand as TottStand} 
         />,
@@ -56,7 +54,7 @@ const ProgressBarInNotification: FC = () => {
       );
 
       // Запускаем процесс и передаём колбэк для закрытия тоста
-      startPocessSendingPpd(operationId, () => {
+      startPocessSendingPpd(operationId, toastId, () => {
         toast.dismiss(toastId);
       });
     }
