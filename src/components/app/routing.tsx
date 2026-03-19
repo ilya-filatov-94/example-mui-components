@@ -1,4 +1,4 @@
-import { lazy } from 'react';
+import { lazy, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { 
   rootRoute, 
@@ -16,6 +16,10 @@ const DialogWithProgressBarPage = lazy(() => import('../../pages/DialogWithProgr
 const ProgressInToastPage = lazy(() => import('../../pages/ProgressBarInNotification'));
  
 function Routing() {
+    useEffect(() => {
+      console.log('чтение очереди операций')
+    }, []);
+
     return (
         <Routes>
             <Route path={rootRoute} element={<Layout />}>
