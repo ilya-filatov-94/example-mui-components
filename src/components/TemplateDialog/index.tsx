@@ -48,7 +48,7 @@ const StyledHeaderDialog = materialStyled(DialogTitle)(() => ({
 type TemplateDialogProps = {
     isOpenDialog: boolean;
     openDialog: (isOpen: boolean) => void;
-    type?: string;
+    type?: 'info' | 'warning' | 'error';
     header?: string;
     content?: JSX.Element | string;
     footer?: JSX.Element;

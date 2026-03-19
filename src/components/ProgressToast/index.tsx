@@ -22,14 +22,19 @@ export const ProgressToast: FC<ProgressToastProps> = ({
   const process = useDataToastProgress(useShallow(
     state => state.listRunningProcesses.find(item => item.operationId === operationId)
   ));
+  const openProcessDetails = useDataToastProgress(state => state.openProcessDetails);
   const { color } = getStatusProgress(process?.overallStatus || 'DEFAULT');
+
+  const handleClick = () => {
+    openProcessDetails(operationId);
+  };
 
   const handleClose = useCallback((process: ProgressToastType & TCurrentProgressState | undefined) => {
     toast.dismiss(process?.toastId);
   }, []);
 
   return (
-    <div className={styles.wrapperContent}>
+    <div className={styles.wrapperContent} onClick={handleClick}>
       <p className={styles.wrapperHeaderContent}>Отправка ППД</p>
       <div className={styles.wrapperLabelItem}>
         <p className={styles.wrapperLabel}>имя ТчВ:</p>

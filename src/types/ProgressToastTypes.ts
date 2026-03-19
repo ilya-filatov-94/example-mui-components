@@ -1,7 +1,7 @@
 export type ProgressToastType = {
-    id: number;
+    id?: number;
     operationId: string; // uuid
-    nameControlObject: string;
+    nameControlObject?: string;
     nameIntPoint: string;
     ottStand: string;
     overallStatus: 'COMPLETED' | 'PARTIALLY_COMPLETED' | 'FAILED' | 'PENDING' | 'DEFAULT' | 'CANCELLED';

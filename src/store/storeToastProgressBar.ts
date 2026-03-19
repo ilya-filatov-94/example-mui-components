@@ -2,25 +2,42 @@ import { create } from 'zustand';
 import { ProgressToastType, TottStand } from '../types/ProgressToastTypes';
 import { getOperationIdForSendingPpd, getProgressSending } from '../services/ppdSendingService';
 
+const TIME_DELAY_BETWEEN_RECURSIVE_REQUESTS = 6000;
+const TIME_DELAY_BEFORE_COMPLETE_PROCESS = 2500;
+
 export type TCurrentProgressState = {
-    loading?: boolean;
-    error?: string | null;
     toastId?: string | number;
+    header?: string,
 }
 
 type TDataSendingPpds = {
     listRunningProcesses: Array<ProgressToastType & TCurrentProgressState>;
-    addNewSendPpd: (nameIntPoint: string, ottStand: TottStand) => Promise<string | undefined>;
+    selectedProcessId: string | null;
+    addNewSendPpd: (nameIntPoint: string, ottStand: TottStand, header: string) => Promise<string | undefined>;
     startPocessSendingPpd: (operationId: string, toastId: string | number, onComplete: () => void) => Promise<void>;
     runRecursiveProcess: (operationId: string, toastId: string | number, onComplete: () => void) => Promise<void>;
+    openProcessDetails: (processId: string) => void;
+    closeProcessDetails: () => void;
 }
 
 export const useDataToastProgress = create<TDataSendingPpds>((set, get) => ({
     listRunningProcesses: [],
-    addNewSendPpd: async (nameIntPoint, ottStand) => {
+    selectedProcessId: null,
+    addNewSendPpd: async (nameIntPoint, ottStand, header) => {
         const response = await getOperationIdForSendingPpd(nameIntPoint, ottStand);
 
         if (response?.data) {
+            const newProcess = {
+                nameIntPoint,
+                ottStand,
+                operationId: response?.data,
+                overallStatus: "DEFAULT" as const,
+                completedTargets: 0,
+                totalTargets: 0,
+                progress: 0,
+                header,
+            };
+            set({ listRunningProcesses: [...(get().listRunningProcesses || []), newProcess] });
             return response.data;
         }
     },
@@ -68,11 +85,17 @@ export const useDataToastProgress = create<TDataSendingPpds>((set, get) => ({
             }
 
             if (currentProgressData.completedTargets < currentProgressData.totalTargets) {
-                setTimeout(get().runRecursiveProcess, 6000, operationId, toastId, onComplete);
+                setTimeout(get().runRecursiveProcess, TIME_DELAY_BETWEEN_RECURSIVE_REQUESTS, operationId, toastId, onComplete);
             } else {
-                setTimeout(onComplete, 2500);
+                setTimeout(onComplete, TIME_DELAY_BEFORE_COMPLETE_PROCESS);
             }
         }
+    },
+    openProcessDetails: (processId: string) => {
+        set({ selectedProcessId: processId });
+    },
+    closeProcessDetails: () => {
+        set({ selectedProcessId: null });
     }
     
 }));

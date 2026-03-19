@@ -28,10 +28,12 @@ const ProgressBarInNotification: FC = () => {
 
   const startProcessSendingPpd = async () => {
     let operationId;
+    let policyType = 'Ott';
     if (dataProcess.nameIntPoint !== '' && dataProcess.ottStand !== '') {
       operationId = await addNewSendPpd(
         dataProcess.nameIntPoint, 
         dataProcess.ottStand as TottStand,
+        `Результат отправки СППД ${policyType ? `в ОТТ` : ''} ${dataProcess.ottStand} стенд`
       );
     }
 

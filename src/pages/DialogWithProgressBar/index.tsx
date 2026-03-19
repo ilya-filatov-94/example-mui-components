@@ -1,6 +1,4 @@
 import { FC, useEffect, useState } from 'react';
-// import { nanoid } from 'nanoid';
-// import { ProgressBarProps } from '../../types/ProgressPpdTypes';
 import { useDataSendingPpds } from '../../store/storeProgressSending';
 import { CustomButton } from '../../components/CustomButton';
 import { TemplateDialog } from '../../components/TemplateDialog';
@@ -20,7 +18,7 @@ const DialogWithProgressBar: FC = () => {
   const [stateDialog, setStateDialog] = useState({
     isOpen: false,
     header: 'Диалог с прогрессом',
-    type: 'info'
+    type: 'info' as const
   });
 
   useEffect(() => {

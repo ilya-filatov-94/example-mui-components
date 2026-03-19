@@ -5,6 +5,7 @@ import { ruRU as coreRuRu, ruRU } from '@mui/material/locale';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Routing from './components/app/routing';
+import { ProcessDetailsDialog } from './components/ProcessDetailsDialog';
 import './App.css';
 
 const theme = createTheme(
@@ -22,9 +23,9 @@ const theme = createTheme(
       speedDial: 70007,
       appBar: 7008,
       drawer: 7009,
-      modal: 7010,
-      snackbar: 7011,
-      tooltip: 7012,
+      snackbar: 7010,
+      tooltip: 7011,
+      modal: 7100,
     }
   },
   ruRU,
@@ -39,6 +40,7 @@ const App: FC = () => {
      <BrowserRouter future={{v7_startTransition: false}}>
       <ThemeProvider theme={theme}>
         <Routing />
+        <ProcessDetailsDialog />
       </ThemeProvider>
      </BrowserRouter>
      <ToastContainer 
@@ -59,7 +61,7 @@ const App: FC = () => {
         closeOnClick={false}
         closeButton={false}
         theme="light"
-        style={{ width: 'auto', maxWidth: '600px' }} // адаптивная ширина
+        style={{ width: 'auto', maxWidth: '600px', zIndex: 7013 }} // адаптивная ширина
       />
     </div>
   );
