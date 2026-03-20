@@ -2,35 +2,35 @@ import axios, { AxiosResponse } from 'axios';
 import { TottStand, ProgressToastType } from '../types/ProgressToastTypes';
 import { addNotification } from '../utils/notifications';
 
-export async function getOperationIdForSendingPpd(nameIntPoint: string, ottStand: TottStand): Promise<void | AxiosResponse<string>> {
+export function getOperationIdForSendingPpd(nameIntPoint: string, ottStand: TottStand): Promise<void | AxiosResponse<string>> {
     const apiUrl = process.env.REACT_APP_API_URL;
-    try {
-        return await axios.post<string>(apiUrl + '/ppd/create-sending',
-            { nameIntPoint, ottStand },
-            {
-                withCredentials: true,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-    } catch (error) {
+    return axios.post<string>(apiUrl + '/ppd/create-sending',
+        { nameIntPoint, ottStand },
+        {
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+    )
+    .then((response) => response)
+    .catch((error: unknown) => {
         if (error instanceof axios.AxiosError) {
             addNotification('error', 'Ошибка запроса operationId');
         }
-    }
+    })
 };
 
-export async function getProgressSending(operationId: string): Promise<void | AxiosResponse<ProgressToastType>> {
-        const apiUrl = process.env.REACT_APP_API_URL;
-    try {
-        return await axios.get<ProgressToastType>(apiUrl + '/ppd/rule-status', {
-            params: {
-                operationId
-            }
-        });
-    } catch (error) {
+export function getProgressSending(operationId: string): Promise<void | AxiosResponse<ProgressToastType>> {
+    const apiUrl = process.env.REACT_APP_API_URL;
+    return axios.get<ProgressToastType>(apiUrl + '/ppd/rule-status', {
+            params: { operationId }
+        }
+    )
+    .then(response => response)
+    .catch((error: unknown) => {
         if (error instanceof axios.AxiosError) {
             addNotification('error', 'Ошибка запроса получения текущего прогресса');
         }
-    }
+    });
 }
