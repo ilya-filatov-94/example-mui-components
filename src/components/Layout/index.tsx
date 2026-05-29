@@ -6,6 +6,7 @@ import styles from './Layout.module.css';
 import Loader from '../Loader';
 import { drawerHeight } from '../SideBar/consts';
 import NavBar from '../NavBar';
+import Navbar2 from '../Navbar2';
 
 const Layout: FC = () => {
   return (
@@ -14,7 +15,8 @@ const Layout: FC = () => {
       <div style={{ display: 'flex', width: '100%', height: '100%' }}>
         <SideBar2 />
         <div className={styles.wrapperLayout}>
-          <NavBar />
+          {/* <NavBar /> */}
+          <Navbar2 />
           <div className={styles.layout} style={{ height: `calc(100% - ${drawerHeight + 3})px`}}>
             <Suspense fallback={<div className={styles.wrapperFallbackForOutlet}><Loader /></div>}>
               <Outlet />
