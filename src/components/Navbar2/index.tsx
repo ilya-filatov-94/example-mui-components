@@ -158,10 +158,11 @@ const TowCable = styled.div`
   }
 `;
 
+// Вращающийся пропеллер (прежний красивый стиль, но координаты под нос)
 const PropellerGroup = styled.g`
-  transform-origin: 165px 41px;  /* центр винта (нос справа) */
+  transform-origin: 172px 40px;
   animation: ${css`
-    ${spinPropeller} 0.24s linear infinite
+    ${spinPropeller} 0.22s linear infinite
   `};
 `;
 
@@ -223,11 +224,11 @@ const Navbar2: FC = () => {
                 <rect x="20" y="36" width="22" height="8" rx="2" fill="#bb882c" stroke="#6b4c1a" strokeWidth="0.6" />
                 <polygon points="30,28 40,14 44,28" fill="#e6b642" stroke="#805d1f" strokeWidth="0.6" />
 
-                {/* Винт на самом носу (крайняя правая точка) */}
+                 {/* Пропеллер на носу */}
                 <PropellerGroup>
-                  <circle cx="180" cy="41" r="6.5" fill="#5a3e1a" stroke="#32200b" strokeWidth="1.2" />
-                  <rect x="174" y="26" width="12" height="30" rx="3" fill="#b8860b" stroke="#7a4900" strokeWidth="0.8" />
-                  <rect x="166" y="36" width="28" height="10" rx="3" fill="#dba130" stroke="#7a4900" strokeWidth="0.6" />
+                  <circle cx="172" cy="40" r="6" fill="#5a3e1a" stroke="#32200b" strokeWidth="1.2" />
+                  <rect x="168" y="26" width="10" height="28" rx="3" fill="#b8860b" stroke="#7a4900" strokeWidth="0.8" />
+                  <rect x="158" y="36" width="28" height="8" rx="3" fill="#dba130" stroke="#7a4900" strokeWidth="0.6" />
                 </PropellerGroup>
 
                 {/* Декоративная линия */}
