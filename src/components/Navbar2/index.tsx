@@ -1,20 +1,13 @@
 import { FC } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 
 // --- Анимации ---
+// Анимации
 const flyAcross = keyframes`
-  0% {
-    left: -380px;
-  }
-  10% {
-    left: -60px;
-  }
-  85% {
-    left: calc(100% - 280px);
-  }
-  100% {
-    left: calc(100% + 320px);
-  }
+  0% { left: -380px; }
+  10% { left: -60px; }
+  85% { left: calc(100% - 280px); }
+  100% { left: calc(100% + 320px); }
 `;
 
 const gentleBob = keyframes`
@@ -30,6 +23,7 @@ const spinPropeller = keyframes`
 
 // --- Стилизованные компоненты ---
 const Nav = styled.nav`
+  overflow: hidden;
   position: relative;
   display: flex;
   justify-content: space-between;
@@ -41,7 +35,6 @@ const Nav = styled.nav`
   border-bottom: 1px solid rgba(255, 200, 100, 0.6);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
   z-index: 100;
-  overflow: visible;
   font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
 
   @media (max-width: 768px) {
@@ -69,50 +62,7 @@ const Logo = styled.div`
   }
 `;
 
-const NavLinks = styled.ul`
-  display: flex;
-  gap: 2rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
 
-  @media (max-width: 768px) {
-    gap: 1.2rem;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-`;
-
-const LinkItem = styled.a`
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1rem;
-  color: #f0f3f8;
-  padding: 0.4rem 0;
-  position: relative;
-  transition: color 0.2s;
-  &:hover {
-    color: #ffbc6e;
-  }
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: #ffbc6e;
-    transition: width 0.25s;
-  }
-  &:hover::after {
-    width: 100%;
-  }
-  @media (max-width: 480px) {
-    font-size: 0.9rem;
-  }
-`;
-
-// Контейнер для летающей группы (абсолютный слой)
 const FlightZone = styled.div`
   position: absolute;
   top: 0;
@@ -124,7 +74,6 @@ const FlightZone = styled.div`
   z-index: 5;
 `;
 
-// Группа, которая движется как единый состав (самолёт + надпись + трос)
 const FlyingTrain = styled.div`
   position: absolute;
   top: 50%;
@@ -132,22 +81,24 @@ const FlyingTrain = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
-  animation: ${flyAcross} 10s cubic-bezier(0.2, 0.1, 0.2, 1) infinite;
+  animation: ${css`
+    ${flyAcross} 10s cubic-bezier(0.2, 0.1, 0.2, 1) infinite
+  `};
   will-change: left;
   filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
 `;
 
-// Эффект лёгкого покачивания всей связки
 const BobbingGroup = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
-  animation: ${gentleBob} 2.2s ease-in-out infinite;
+  animation: ${css`
+    ${gentleBob} 2.2s ease-in-out infinite
+  `};
 `;
 
-// Стиль баннера / вымпела, который тянет самолёт
 const Banner = styled.div`
-  background: linear-gradient(135deg, #2e1b0e, #5a3a24);
+  background: linear-gradient(135deg, #b22234, #8b0000);
   padding: 6px 14px;
   border-radius: 40px 12px 40px 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 200, 0.3);
@@ -178,13 +129,12 @@ const Banner = styled.div`
   }
 `;
 
-// Декоративный трос (цепочка, соединяющая баннер и самолёт)
 const TowCable = styled.div`
   width: 38px;
   height: 3px;
   background: repeating-linear-gradient(90deg, #b87c3a, #b87c3a 6px, #dba551 6px, #dba551 12px);
   border-radius: 4px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
   position: relative;
   
   &::after {
@@ -208,49 +158,44 @@ const TowCable = styled.div`
   }
 `;
 
-// SVG самолёта (кукурузник Ан-2)
+const PropellerGroup = styled.g`
+  transform-origin: 165px 41px;  /* центр винта (нос справа) */
+  animation: ${css`
+    ${spinPropeller} 0.24s linear infinite
+  `};
+`;
+
 const PlaneSVG = styled.svg`
-  width: 190px;
+  width: 210px;
   height: auto;
   display: block;
-  filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
-  transition: all 0.1s;
+  filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
 
   @media (max-width: 768px) {
-    width: 150px;
+    width: 170px;
   }
   @media (max-width: 480px) {
-    width: 130px;
+    width: 150px;
   }
 `;
 
-// Компонент навигации с пролетающим кукурузником
+// Компонент навигации
 const Navbar2: FC = () => {
   return (
     <Nav>
       <Logo>✈️ Авиа-Стиль</Logo>
-      <NavLinks>
-        <LinkItem href="#">Маршруты</LinkItem>
-        <LinkItem href="#">Флот</LinkItem>
-        <LinkItem href="#">История</LinkItem>
-        <LinkItem href="#">Контакты</LinkItem>
-      </NavLinks>
 
       <FlightZone>
         <FlyingTrain>
           <BobbingGroup>
             <Banner>Режим StandIn</Banner>
             <TowCable />
-            <PlaneSVG viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
+            <PlaneSVG viewBox="0 0 210 80" xmlns="http://www.w3.org/2000/svg">
               <defs>
                 <linearGradient id="bodyGreen" x1="0%" y1="0%" x2="100%" y2="40%">
-                  <stop offset="0%" stop-color="#1e6b2f" />
-                  <stop offset="60%" stop-color="#3ca04f" />
-                  <stop offset="100%" stop-color="#165b24" />
-                </linearGradient>
-                <linearGradient id="wingGold" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="#f5c542" />
-                  <stop offset="100%" stop-color="#c2811a" />
+                  <stop offset="0%" stopColor="#1e6b2f" />
+                  <stop offset="60%" stopColor="#3ca04f" />
+                  <stop offset="100%" stopColor="#165b24" />
                 </linearGradient>
                 <filter id="shadow" x="-5%" y="-5%" width="120%" height="120%">
                   <feDropShadow dx="1" dy="1.5" stdDeviation="1" floodOpacity="0.4" />
@@ -258,47 +203,43 @@ const Navbar2: FC = () => {
               </defs>
 
               <g filter="url(#shadow)">
-                {/* Верхнее крыло (основное) */}
-                <rect x="28" y="16" width="112" height="13" rx="4" fill="url(#wingGold)" stroke="#7a5313" strokeWidth="0.8" />
-                {/* Законцовки */}
-                <rect x="26" y="14" width="5" height="17" rx="1.5" fill="#c9942c" />
-                <rect x="136" y="14" width="5" height="17" rx="1.5" fill="#c9942c" />
+                {/* Фюзеляж: хвост слева (x=25), нос справа (x=170) */}
+                <rect x="25" y="28" width="148" height="24" rx="10" fill="url(#bodyGreen)" stroke="#0e4219" strokeWidth="0.8" />
 
-                {/* Фюзеляж */}
-                <rect x="45" y="28" width="98" height="23" rx="10" fill="url(#bodyGreen)" stroke="#0e4219" strokeWidth="0.8" />
+                {/* Кабина пилота – смещена левее, чтобы не перекрывалась винтом */}
+                <rect x="125" y="30" width="28" height="14" rx="4" fill="#c2ecff" stroke="#204c5e" strokeWidth="0.8" />
+                <rect x="128" y="33" width="10" height="8" rx="1.5" fill="#e8f7ff" stroke="#204c5e" strokeWidth="0.5" />
+                <rect x="140" y="33" width="10" height="8" rx="1.5" fill="#e8f7ff" stroke="#204c5e" strokeWidth="0.5" />
 
-                {/* Хвостовое горизонтальное оперение */}
-                <rect x="137" y="36" width="27" height="7" rx="2" fill="#bb882c" stroke="#6b4c1a" strokeWidth="0.6" />
-                {/* Киль */}
-                <polygon points="152,28 164,14 168,28" fill="#e6b642" stroke="#805d1f" strokeWidth="0.6" />
+                {/* Иллюминаторы пассажирские */}
+                <circle cx="60" cy="40" r="3.5" fill="#a1defa" stroke="#204c5e" strokeWidth="0.7" />
+                <circle cx="78" cy="40" r="3.5" fill="#a1defa" stroke="#204c5e" strokeWidth="0.7" />
+                <circle cx="96" cy="40" r="3.5" fill="#a1defa" stroke="#204c5e" strokeWidth="0.7" />
 
-                {/* Пропеллер с вращением */}
-                <g style={{ transformOrigin: '45px 39.5px', animation: `${spinPropeller} 0.24s linear infinite` }}>
-                  <circle cx="45" cy="39.5" r="5" fill="#5a3e1a" stroke="#32200b" strokeWidth="1.2" />
-                  <rect x="40" y="26" width="10" height="27" rx="3" fill="#b8860b" stroke="#7a4900" strokeWidth="0.8" />
-                  <rect x="31" y="36" width="28" height="7" rx="3" fill="#dba130" stroke="#7a4900" strokeWidth="0.6" />
-                </g>
+                {/* Надпись "КУКУРУЗНИК" на фюзеляже */}
+                <text x="85" y="48" fontFamily="'Segoe UI', 'Arial Black', sans-serif" fontSize="8" fontWeight="900" fill="#FFF2C9" stroke="#15471f" strokeWidth="0.4" textAnchor="middle" letterSpacing="1">КУКУРУЗНИК</text>
 
-                {/* Иллюминаторы */}
-                <circle cx="74" cy="36" r="3" fill="#a1defa" stroke="#204c5e" strokeWidth="0.7" />
-                <circle cx="88" cy="36" r="3" fill="#a1defa" stroke="#204c5e" strokeWidth="0.7" />
-                <circle cx="102" cy="36" r="3" fill="#a1defa" stroke="#204c5e" strokeWidth="0.7" />
-                <rect x="54" y="32" width="11" height="8" rx="2" fill="#c2ecff" stroke="#204c5e" strokeWidth="0.7" />
+                {/* Хвостовое оперение (слева) */}
+                <rect x="20" y="36" width="22" height="8" rx="2" fill="#bb882c" stroke="#6b4c1a" strokeWidth="0.6" />
+                <polygon points="30,28 40,14 44,28" fill="#e6b642" stroke="#805d1f" strokeWidth="0.6" />
 
-                {/* НАДПИСЬ НА ФЮЗЕЛЯЖЕ "КУКУРУЗНИК" */}
-                <text x="99" y="46" fontFamily="'Segoe UI', 'Arial Black', sans-serif" fontSize="9" fontWeight="900" fill="#FFF2C9" stroke="#15471f" strokeWidth="0.4" textAnchor="middle" letterSpacing="1.2">КУКУРУЗНИК</text>
-                <text x="146" y="47" fontFamily="monospace" fontSize="5.5" fill="#FFE8B6" fontWeight="bold">АН-2</text>
+                {/* Винт на самом носу (крайняя правая точка) */}
+                <PropellerGroup>
+                  <circle cx="180" cy="41" r="6.5" fill="#5a3e1a" stroke="#32200b" strokeWidth="1.2" />
+                  <rect x="174" y="26" width="12" height="30" rx="3" fill="#b8860b" stroke="#7a4900" strokeWidth="0.8" />
+                  <rect x="166" y="36" width="28" height="10" rx="3" fill="#dba130" stroke="#7a4900" strokeWidth="0.6" />
+                </PropellerGroup>
 
-                {/* Декоративные полосы */}
-                <line x1="60" y1="43" x2="134" y2="43" stroke="#FFF3BB" strokeWidth="0.8" strokeDasharray="2 2" opacity="0.8" />
+                {/* Декоративная линия */}
+                <line x1="35" y1="44" x2="160" y2="44" stroke="#FFF3BB" strokeWidth="0.8" strokeDasharray="2 2" opacity="0.8" />
 
                 {/* Шасси (колёса) */}
-                <rect x="70" y="51" width="13" height="4" rx="2" fill="#4e3a22" />
-                <rect x="115" y="51" width="13" height="4" rx="2" fill="#4e3a22" />
-                <circle cx="76.5" cy="55.5" r="3.2" fill="#2b2b27" stroke="#767464" strokeWidth="0.6" />
-                <circle cx="121.5" cy="55.5" r="3.2" fill="#2b2b27" stroke="#767464" strokeWidth="0.6" />
-                <line x1="76.5" y1="51" x2="76.5" y2="55.5" stroke="#7a6233" strokeWidth="1.2" />
-                <line x1="121.5" y1="51" x2="121.5" y2="55.5" stroke="#7a6233" strokeWidth="1.2" />
+                <rect x="70" y="52" width="16" height="5" rx="2" fill="#4e3a22" />
+                <rect x="120" y="52" width="16" height="5" rx="2" fill="#4e3a22" />
+                <circle cx="78" cy="59" r="4.5" fill="#2b2b27" stroke="#767464" strokeWidth="0.8" />
+                <circle cx="128" cy="59" r="4.5" fill="#2b2b27" stroke="#767464" strokeWidth="0.8" />
+                <line x1="78" y1="52" x2="78" y2="59" stroke="#7a6233" strokeWidth="1.5" />
+                <line x1="128" y1="52" x2="128" y2="59" stroke="#7a6233" strokeWidth="1.5" />
               </g>
             </PlaneSVG>
           </BobbingGroup>
@@ -307,6 +248,5 @@ const Navbar2: FC = () => {
     </Nav>
   );
 };
-
 
 export default Navbar2;
