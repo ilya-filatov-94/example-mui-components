@@ -37,6 +37,7 @@ const ProgressBarInNotification: FC = () => {
     nameIntPoint: '',
     ottStand: '' as OttStands,
   });
+  const [isLoading, setLoading] = useState(false);
   const addNewSendPpd = useDataToastProgress(state => state.addNewSendPpd);
   const startPocessSendingPpd = useDataToastProgress(
     state => state.startPocessSendingPpd,
@@ -50,6 +51,7 @@ const ProgressBarInNotification: FC = () => {
 
   const handlerSelectStand = (choosenStand: OttStands) => {
     selectStand(choosenStand);
+    setDataProcess(prev => ({ ...prev, ottStand: choosenStand }));
   };
 
   const openNotification = () => {
@@ -59,12 +61,17 @@ const ProgressBarInNotification: FC = () => {
   const startProcessSendingPpd = async () => {
     let operationId;
     let policyType = 'Ott';
-    if (dataProcess.nameIntPoint !== '' && !!dataProcess.ottStand) {
-      operationId = await addNewSendPpd(
-        dataProcess.nameIntPoint,
-        dataProcess.ottStand as OttStands,
-        `Результат отправки СППД ${policyType ? `в ОТТ` : ''} ${dataProcess.ottStand} стенд`,
-      );
+    if (dataProcess.nameIntPoint !== '' && dataProcess.ottStand) {
+      setLoading(true);
+      try {
+        operationId = await addNewSendPpd(
+          dataProcess.nameIntPoint,
+          dataProcess.ottStand as OttStands,
+          `Результат отправки СППД ${policyType ? `в ОТТ` : ''} ${dataProcess.ottStand} стенд`,
+        );
+      } catch (error) {
+        setLoading(false);
+      }
     }
 
     if (operationId) {
@@ -87,6 +94,7 @@ const ProgressBarInNotification: FC = () => {
 
       // Запускаем процесс и передаём колбэк для закрытия тоста
       startPocessSendingPpd(operationId, toastId, () => {
+        setLoading(false);
         toast.dismiss(toastId);
       });
     }
@@ -108,13 +116,6 @@ const ProgressBarInNotification: FC = () => {
           handlerSelect={handlerSelectStand}
           minWidth={230}
         />
-        {/* <MuiSelect
-          placeholder="Выберите стенд"
-          selectedValue={selectedStand as string}
-          listValues={listStands as ItemListSelect[]}
-          handlerSelect={handlerSelectStand}
-          minWidth={230}
-        /> */}
       </div>
       <CustomButton
         text="Показать уведомление"
@@ -125,6 +126,7 @@ const ProgressBarInNotification: FC = () => {
         text="Запустить отправку"
         onClick={startProcessSendingPpd}
         type="button"
+        loading={isLoading}
       />
     </div>
   );
