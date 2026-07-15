@@ -1,4 +1,4 @@
-import { useId, memo, CSSProperties } from 'react';
+import { useId, memo, ForwardedRef, forwardRef } from 'react';
 import type { SxProps } from '@mui/system';
 import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
@@ -29,6 +29,7 @@ interface MuiSelectProps<T = string> extends Omit<
 
 function MuiSelectInner<T extends string | number = string>(
   props: MuiSelectProps<T>,
+  ref: ForwardedRef<HTMLDivElement>,
 ) {
   const {
     label,
@@ -81,6 +82,7 @@ function MuiSelectInner<T extends string | number = string>(
     >
       {label && <InputLabel>{label}</InputLabel>}
       <Select
+        ref={ref}
         labelId={`id-label-${formControlId}`}
         id={`id-select-${formControlId}`}
         label={label}
@@ -109,8 +111,12 @@ function MuiSelectInner<T extends string | number = string>(
   );
 }
 
-export const MuiSelect = memo(MuiSelectInner) as <
+// 1. Оборачиваем в forwardRef
+const MuiSelectWithRef = forwardRef(MuiSelectInner);
+
+// 2. Мемоизируем и явно указываем сохраняемую generic-сигнатуру
+export const MuiSelect = memo(MuiSelectWithRef) as <
   T extends string | number = string,
 >(
-  props: MuiSelectProps<T>,
+  props: MuiSelectProps<T> & { ref?: React.Ref<HTMLDivElement> },
 ) => JSX.Element;
