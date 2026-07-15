@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 48" width="64" height="48">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
   <defs>
     <style>
       .text-efs {
         font-family: sans-serif, cursive;
-        font-size: 21px;
+        font-size: 13px;
         font-weight: 700;
         fill: #0000008a;
       }
@@ -11,7 +11,7 @@
   </defs>
 
   <!-- Шестерёнка в левом нижнем углу -->
-  <g transform="translate(12, 38)">
+  <g transform="translate(12, 30)">
     <!-- внешнее кольцо -->
     <circle cx="0" cy="0" r="7" fill="none" stroke="#0000008a" stroke-width="1.8"/>
     <!-- 8 зубцов -->
@@ -28,5 +28,5 @@
   </g>
 
   <!-- Надпись «ЕФС» по центру -->
-  <text x="38" y="28" class="text-efs" text-anchor="middle" dominant-baseline="central">ЕФС</text>
+  <text x="30" y="17" class="text-efs" text-anchor="middle" dominant-baseline="central">ЕФС</text>
 </svg>

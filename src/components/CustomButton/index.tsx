@@ -50,7 +50,7 @@ export const CustomButton: FC<ButtonHTMLAttributes<HTMLButtonElement> & ButtonPr
           <i className={styles.loaderCircle} />
         </Fragment>
       ) : (
-        <>{text}</> || <>{children}</>
+        <>{text || children}</>
       )}
     </button>
   )

@@ -10,4 +10,4 @@ export type ProgressToastType = {
     progress: number;
 }
 
-export type TottStand = "IFT" | "NT" | "PSI" | "PROM";
+export type OttStands = "IFT" | "NT" | "PSI" | "PROM";
