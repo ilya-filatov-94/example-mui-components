@@ -102,7 +102,7 @@ const ProgressBarInNotification: FC = () => {
           onChange={handlerInput}
         />
         <MuiSelect<OttStands>
-          placeholder="Выберите стенд"
+          label="Выберите стенд"
           selectedValue={selectedStand as OttStands}
           listValues={listStands}
           handlerSelect={handlerSelectStand}

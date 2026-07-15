@@ -1,4 +1,5 @@
 import { useId, memo, CSSProperties } from 'react';
+import type { SxProps } from '@mui/system';
 import Select, { SelectChangeEvent, SelectProps } from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 import FormControl from '@mui/material/FormControl';
@@ -22,8 +23,8 @@ interface MuiSelectProps<T = string> extends Omit<
   required?: boolean;
   minWidth?: number;
   isError?: boolean;
-  stylesSelect?: CSSProperties;
-  stylesForm?: CSSProperties;
+  stylesSelect?: SxProps; // SxProps для поддержки псевдоклассов, темы mui и медиа-запросов
+  stylesForm?: SxProps; // SxProps для поддержки псевдоклассов, темы mui и медиа-запросов
 }
 
 function MuiSelectInner<T extends string | number = string>(
@@ -48,53 +49,20 @@ function MuiSelectInner<T extends string | number = string>(
     ? `select-label-${reactId}`
     : `select-placeholder-${reactId}`;
 
-  // Если передан label – рендерим обычный Select с InputLabel
-  if (label) {
-    return (
-      <FormControl
-        size="small"
-        fullWidth
-        id={`id-label-select-${formControlId}`}
-        sx={{
-          height: '100%',
-          minWidth,
-          '.MuiFormControl-root': { margin: '0 !important' },
-          '& .MuiSelect-select': {
-            color: 'text.secondary',
-          },
-          ...stylesForm,
-        }}
-        required={required}
-      >
-        <InputLabel>{label}</InputLabel>
-        <Select
-          labelId={`id-label-${formControlId}`}
-          id={`id-select-${formControlId}`}
-          label={label}
-          value={selectedValue}
-          onChange={(event: SelectChangeEvent<T>) => {
-            handlerSelect(event.target.value as T);
-          }}
-          sx={{
-            border: isError ? '2px solid red' : 'none',
-            ...stylesSelect,
-          }}
-          {...selectProps}
-        >
-          {listValues?.map(item => (
-            <MenuItem
-              key={String(item.value)}
-              value={item.value as any}
-            >
-              {item.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    );
-  }
+  const renderPlaceholderValue = (selected: T) => {
+    if (
+      !selected ||
+      (Array.isArray(selected) && selected.length === 0) ||
+      selected === ''
+    ) {
+      return (
+        <Typography sx={{ color: 'text.secondary' }}>{placeholder}</Typography>
+      );
+    }
+    const item = listValues.find(i => i.value === selected);
+    return item ? item.name : String(selected);
+  };
 
-  // Иначе – placeholder через renderValue и displayEmpty
   return (
     <FormControl
       size="small"
@@ -111,10 +79,13 @@ function MuiSelectInner<T extends string | number = string>(
       }}
       required={required}
     >
+      {label && <InputLabel>{label}</InputLabel>}
       <Select
         labelId={`id-label-${formControlId}`}
         id={`id-select-${formControlId}`}
-        displayEmpty
+        label={label}
+        displayEmpty={!label}
+        renderValue={!label ? renderPlaceholderValue : undefined}
         value={selectedValue}
         onChange={(event: SelectChangeEvent<T>) => {
           handlerSelect(event.target.value as T);
@@ -123,27 +94,12 @@ function MuiSelectInner<T extends string | number = string>(
           border: isError ? '2px solid red' : 'none',
           ...stylesSelect,
         }}
-        renderValue={selected => {
-          if (
-            !selected ||
-            (Array.isArray(selected) && selected.length === 0) ||
-            selected === ''
-          ) {
-            return (
-              <Typography sx={{ color: 'text.secondary' }}>
-                {placeholder}
-              </Typography>
-            );
-          }
-          const item = listValues.find(i => i.value === selected);
-          return item ? item.name : String(selected);
-        }}
         {...selectProps}
       >
         {listValues?.map(item => (
           <MenuItem
             key={String(item.value)}
-            value={item.value as any}
+            value={item.value}
           >
             {item.name}
           </MenuItem>
