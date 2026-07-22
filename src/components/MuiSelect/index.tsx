@@ -49,17 +49,22 @@ function MuiSelectInner<T extends string | number = string>(
   const formControlId = label
     ? `select-label-${reactId}`
     : `select-placeholder-${reactId}`;
+  const isEmptyValue = (selected: T) => {
+    return (
+      selected === '' ||
+      selected === null ||
+      selected === undefined ||
+      (Array.isArray(selected) && selected?.length === 0)
+    );
+  };
 
   const renderPlaceholderValue = (selected: T) => {
-    if (
-      !selected ||
-      (Array.isArray(selected) && selected.length === 0) ||
-      selected === ''
-    ) {
+    if (isEmptyValue(selected)) {
       return (
         <Typography sx={{ color: 'text.secondary' }}>{placeholder}</Typography>
       );
     }
+
     const item = listValues.find(i => i.value === selected);
     return item ? item.name : String(selected);
   };
@@ -70,12 +75,8 @@ function MuiSelectInner<T extends string | number = string>(
       fullWidth
       id={`id-label-select-${formControlId}`}
       sx={{
-        height: '100%',
         minWidth,
         '.MuiFormControl-root': { margin: '0 !important' },
-        '& .MuiSelect-select': {
-          color: 'text.secondary',
-        },
         ...stylesForm,
       }}
       required={required}
@@ -94,6 +95,11 @@ function MuiSelectInner<T extends string | number = string>(
         }}
         sx={{
           border: isError ? '2px solid red' : 'none',
+          '& .MuiSelect-select': {
+            color: isEmptyValue(selectedValue)
+              ? 'text.secondary'
+              : 'text.primary',
+          },
           ...stylesSelect,
         }}
         {...selectProps}

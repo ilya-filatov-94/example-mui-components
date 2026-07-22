@@ -12,7 +12,7 @@ export default defineConfig({
       svgrOptions: {
         exportType: 'default',
       },
-    })
+    }),
   ],
   html: {
     template: './public/index.html',
@@ -27,7 +27,8 @@ export default defineConfig({
   },
   performance: {
     chunkSplit: {
-      strategy: "single-vendor"
-    }
-  }
+      strategy: 'single-vendor',
+    },
+  },
 });
+
