@@ -199,10 +199,11 @@ export const CustomDataGrid = ({
 
   // Реакция на изменение видимости колонок (изменение columns)
   useEffect(() => {
-    if (initializedRef.current && containerWidth > 0) {
-      recalcWidths(columns, containerWidth, false);
+    const currentWidthScreen = containerRef.current?.clientWidth;
+    if (initializedRef.current && currentWidthScreen > 0) {
+      recalcWidths(columns, currentWidthScreen, true);
     }
-  }, [columns, containerWidth, recalcWidths]);
+  }, [columns, recalcWidths]);
 
   // -------------------------------------------
   // Обработчики перетаскивания
