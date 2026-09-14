@@ -2,8 +2,8 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { RolloutTable } from '@/features/rollouts/ui/RolloutTable';
-import type { RolloutPage } from '@/features/rollouts/types';
+import { RolloutTable } from './RolloutTable';
+import type { RolloutPage } from '../types';
 
 export function RolloutsPage() {
   const [page, setPage] = useState(0);
