@@ -16,7 +16,6 @@ export function usePauseRollout(queryKey: readonly unknown[]) {
     },
 
     onSuccess: updated => {
-      // Патчим кэш ответом сервера — без рефетча
       queryClient.setQueryData<RolloutPage>(queryKey, prev => {
         if (!prev) return prev;
         return {

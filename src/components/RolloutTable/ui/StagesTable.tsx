@@ -1,88 +1,71 @@
-import styled from 'styled-components';
 import type { Stage } from '../types';
 import { formatDateTime } from '../lib/formatDate';
+import { DataTable } from './DataTable';
+import { type Column } from '../typesDataTable';
 import { StatusBadge } from './StatusBadge';
 import { TechInfoCell } from './TechInfoCell';
 
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-`;
-
-const Th = styled.th`
-  padding: 8px 12px;
-  text-align: left;
-  font-size: 12px;
-  font-weight: 600;
-  color: #455a64;
-  background: #fafafa;
-  border-top: 1px solid #e0e0e0;
-  border-bottom: 1px solid #e0e0e0;
-  white-space: nowrap;
-`;
-
-const Td = styled.td`
-  padding: 8px 12px;
-  font-size: 13px;
-  color: #333;
-  border-bottom: 1px solid #eee;
-  vertical-align: middle;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
-const Empty = styled.div`
-  padding: 12px;
-  text-align: center;
-  font-size: 13px;
-  color: #999;
-  background: #fafafa;
-  border-bottom: 1px solid #eee;
-`;
+const columns: Column<Stage>[] = [
+  {
+    key: 'sequenceNo',
+    title: 'Порядковый номер этапа',
+    width: '14%',
+    renderCell: stage => stage.sequenceNo,
+  },
+  {
+    key: 'blockCodes',
+    title: 'Состав группы',
+    width: '20%',
+    renderCell: stage => stage.blockCodes.join(', '),
+  },
+  {
+    key: 'sheduledTs',
+    title: 'Заданное время старта',
+    width: '16%',
+    renderCell: stage => formatDateTime(stage.sheduledTs),
+  },
+  {
+    key: 'status',
+    title: 'Статус',
+    width: '12%',
+    renderCell: stage => <StatusBadge status={stage.status} />,
+  },
+  {
+    key: 'finishedTs',
+    title: 'Время окончания',
+    width: '16%',
+    renderCell: stage => formatDateTime(stage.finishedTs),
+  },
+  {
+    key: 'techInfo',
+    title: 'Тех. Инфо.',
+    width: '22%',
+    renderCell: stage => <TechInfoCell errorReason={stage.errorReason} />,
+  },
+];
 
 export function StagesTable({ stages }: { stages: Stage[] }) {
-  if (!stages.length) return <Empty>Нет этапов</Empty>;
+  if (!stages.length) {
+    return (
+      <div
+        style={{
+          padding: 12,
+          textAlign: 'center',
+          color: '#999',
+          fontSize: 13,
+        }}
+      >
+        Нет этапов
+      </div>
+    );
+  }
 
   return (
-    <Table>
-      <colgroup>
-        <col style={{ width: '14%' }} />
-        <col style={{ width: '20%' }} />
-        <col style={{ width: '16%' }} />
-        <col style={{ width: '12%' }} />
-        <col style={{ width: '16%' }} />
-        <col style={{ width: '22%' }} />
-      </colgroup>
-      <thead>
-        <tr>
-          <Th>Порядковый номер этапа</Th>
-          <Th>Состав группы</Th>
-          <Th>Заданное время старта</Th>
-          <Th>Статус</Th>
-          <Th>Время окончания</Th>
-          <Th>Тех. Инфо.</Th>
-        </tr>
-      </thead>
-      <tbody>
-        {stages.map(stage => (
-          <tr key={stage.stageId}>
-            <Td>{stage.sequenceNo}</Td>
-            <Td title={stage.blockCodes.join(', ')}>
-              {stage.blockCodes.join(', ')}
-            </Td>
-            <Td>{formatDateTime(stage.sheduledTs)}</Td>
-            <Td>
-              <StatusBadge status={stage.status} />
-            </Td>
-            <Td>{formatDateTime(stage.finishedTs)}</Td>
-            <Td>
-              <TechInfoCell errorReason={stage.errorReason} />
-            </Td>
-          </tr>
-        ))}
-      </tbody>
-    </Table>
+    <DataTable<Stage>
+      data={stages}
+      columns={columns}
+      getRowId={stage => stage.stageId}
+      minWidth={900}
+    />
   );
 }
