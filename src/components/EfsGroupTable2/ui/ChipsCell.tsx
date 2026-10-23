@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { Popover } from '@mui/material';
 import {
   BlockChip,
@@ -14,62 +14,10 @@ interface ChipsCellProps {
   onEdit: () => void;
 }
 
-export const ChipsWrapper = styled.div`
-  display: flex;
-  flex-wrap: nowrap; /* всё в одну строку — высота стабильна */
-  align-items: center;
-  gap: 6px;
-  min-width: 0; /* разрешаем flex-детям сжиматься */
-`;
+const OPEN_DELAY = 150;
+const CLOSE_DELAY = 200;
 
-export const BlockChip = styled.span`
-  padding: 4px 8px;
-  border-radius: 12px;
-  background-color: #f0f2f5;
-  font-size: 13px;
-  max-width: 140px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  flex-shrink: 0;
-`;
-
-export const MoreChipsButton = styled.button`
-  flex-shrink: 0;
-  border: none;
-  border-radius: 12px;
-  padding: 3px 8px;
-  background: #eef1f4;
-  color: #596579;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-
-  &:hover {
-    background: #e1e5e9;
-  }
-`;
-
-export const ChipsPopoverContent = styled.div`
-  padding: 12px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  max-width: 360px;
-  max-height: 280px;
-  overflow-y: auto;
-
-  /* внутри попапа полное имя чипа — без обрезки */
-  ${BlockChip} {
-    max-width: none;
-  }
-`;
-
-const OPEN_DELAY = 150; // мс — чтобы не мигать при проходе мимо
-const CLOSE_DELAY = 200; // мс — чтобы успеть перевести курсор на popover
-
-export function ChipsCell({ items, maxVisible = 2, onEdit }: ChipsCellProps) {
+function ChipsCellInner({ items, maxVisible = 2, onEdit }: ChipsCellProps) {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
   const openTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -96,7 +44,6 @@ export function ChipsCell({ items, maxVisible = 2, onEdit }: ChipsCellProps) {
     closeTimerRef.current = setTimeout(() => setOpen(false), CLOSE_DELAY);
   };
 
-  // очистка при unmount
   useEffect(() => clearTimers, []);
 
   const visible = items.slice(0, maxVisible);
@@ -119,7 +66,7 @@ export function ChipsCell({ items, maxVisible = 2, onEdit }: ChipsCellProps) {
           type="button"
           onMouseEnter={scheduleOpen}
           onMouseLeave={scheduleClose}
-          onClick={() => setOpen(true)} // fallback для клавиатуры
+          onClick={() => setOpen(true)}
           aria-label={`Показать ещё ${hiddenCount}`}
         >
           +{hiddenCount}
@@ -138,14 +85,23 @@ export function ChipsCell({ items, maxVisible = 2, onEdit }: ChipsCellProps) {
         open={open}
         anchorEl={triggerRef.current}
         onClose={() => setOpen(false)}
+        keepMounted
+        hideBackdrop
+        disableScrollLock
+        transitionDuration={0}
         disableAutoFocus
         disableRestoreFocus
         disableEnforceFocus
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-        PaperProps={{
-          onMouseEnter: clearTimers, // курсор на popover — не закрываем
-          onMouseLeave: scheduleClose,
+        slotProps={{
+          paper: {
+            style: {
+              marginTop: 4, // ← тот самый зазор между кнопкой и поповером
+            },
+            onMouseEnter: clearTimers,
+            onMouseLeave: scheduleClose,
+          },
         }}
       >
         <ChipsPopoverContent>
@@ -158,11 +114,14 @@ export function ChipsCell({ items, maxVisible = 2, onEdit }: ChipsCellProps) {
   );
 }
 
-// if (isEditingId === row.groupId) { /* CompositionMultiSelect */ }
-// return (
-//   <ChipsCell
-//     items={row.nodeCodes}
-//     maxVisible={2}
-//     onEdit={() => editing.start(row)}
-//   />
-// );
+export const ChipsCell = memo(ChipsCellInner, (prev, next) => {
+  // items — массив; сравниваем по содержимому (ссылка может меняться при map/filter)
+  if (prev.items === next.items && prev.maxVisible === next.maxVisible)
+    return true;
+  if (prev.items.length !== next.items.length) return false;
+  for (let i = 0; i < prev.items.length; i++) {
+    if (prev.items[i] !== next.items[i]) return false;
+  }
+  // onEdit НЕ сравниваем — он новый каждый рендер, и это ок
+  return true;
+});

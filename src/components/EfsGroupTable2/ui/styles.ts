@@ -69,21 +69,6 @@ export const MoveButton = styled.button`
   }
 `;
 
-export const ChipsWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-  white-space: normal;
-`;
-
-export const BlockChip = styled.span`
-  padding: 4px 8px;
-  border-radius: 12px;
-  background-color: #f0f2f5;
-  font-size: 13px;
-`;
-
 export const CreationBlock = styled.div`
   padding: 16px 0 10px;
 `;
@@ -143,4 +128,56 @@ export const BottomActions = styled.div`
 
 export const LoaderWrapper = styled.div`
   padding: 0 20px;
+`;
+
+export const ChipsWrapper = styled.div`
+  display: flex;
+  flex-wrap: nowrap; /* всё в одну строку — высота стабильна */
+  align-items: center;
+  gap: 6px;
+  min-width: 0; /* разрешаем flex-детям сжиматься */
+`;
+
+export const BlockChip = styled.span`
+  padding: 4px 8px;
+  border-radius: 12px;
+  background-color: #f0f2f5;
+  font-size: 13px;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-shrink: 0;
+`;
+
+export const MoreChipsButton = styled.button`
+  flex-shrink: 0;
+  border: none;
+  border-radius: 12px;
+  padding: 3px 8px;
+  background: #eef1f4;
+  color: #596579;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover {
+    background: #e1e5e9;
+  }
+`;
+
+export const ChipsPopoverContent = styled.div`
+  padding: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-width: 360px;
+  max-height: 280px;
+  overflow-y: auto;
+
+  /* внутри попапа полное имя чипа — без обрезки */
+  ${BlockChip} {
+    max-width: none;
+  }
 `;
