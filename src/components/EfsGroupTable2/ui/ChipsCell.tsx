@@ -95,10 +95,11 @@ function ChipsCellInner({ items, maxVisible = 2, onEdit }: ChipsCellProps) {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'left' }}
         slotProps={{
+          root: {
+            style: { pointerEvents: 'none' }, // ← root больше не крадёт hover
+          },
           paper: {
-            style: {
-              marginTop: 4, // ← тот самый зазор между кнопкой и поповером
-            },
+            style: { marginTop: 4, pointerEvents: 'auto' }, // ← сам popover интерактивен
             onMouseEnter: clearTimers,
             onMouseLeave: scheduleClose,
           },
