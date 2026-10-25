@@ -31,7 +31,7 @@ export function getEfsGroups(ci, stand, setGroups, setLOading) {
       },
     )
     .then(response => {
-      setGroups(RollerShadesClosedOutlined.data || []);
+      setGroups(response.data || []);
     })
     .catch(error => {
       if (error instanceof axios.AxiosError) {
